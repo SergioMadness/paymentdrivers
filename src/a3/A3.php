@@ -39,7 +39,7 @@ class A3 extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      *
      * @var array
      */
-    private $soapClients = array();
+    private $soapClients = [];
 
     /**
      * Path to certificate
@@ -91,7 +91,7 @@ class A3 extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * @param array $params
      * @return \stdClass
      */
-    public function sendMessage(array $params = array())
+    public function sendMessage(array $params = [])
     {
         return $this->getSoapClient($this->getServiceName())->{$this->getMethod()}($params);
     }
@@ -156,7 +156,7 @@ class A3 extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
         if (!isset($this->soapClients[$type])) {
             $this->setSoapClient($type,
                 new soap\SignedSoapClient($this->getUrl().$type.'?wsdl',
-                array(
+                [
                 'local_cert' => getcwd().$this->getSSLCetificatePath(),
                 'passphrase' => $this->getSSLCetificatePassword(),
                 'connection_timeout' => 20,
@@ -165,7 +165,7 @@ class A3 extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                     'cert' => getcwd().$this->getCertificatePath(),
                     'certpasswd' => $this->getCertificatePassword()
                 )
-                ))
+                ])
             );
         }
         return $this->soapClients[$type];

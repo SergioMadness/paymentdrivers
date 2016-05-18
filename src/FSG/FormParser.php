@@ -7,13 +7,13 @@ class FormParser
     const EVENT_INIT     = 'onInitEvent';
     const EVENT_VALIDATE = 'onValidateEvent';
 
-    protected $availableTags = array(
-        'Form' => array('version'),
-        'Service' => array('num'),
-        'Abonent' => array('*'),
-        'Fields' => array(),
-        'Field' => array('name', 'value', 'dataType')
-    );
+    protected $availableTags = [
+        'Form' => ['version'],
+        'Service' => ['num'],
+        'Abonent' => ['*'],
+        'Fields' => [],
+        'Field' => ['name', 'value', 'dataType']
+    ];
 
     /**
      * Form xml
@@ -59,7 +59,7 @@ class FormParser
      */
     public function getFields($visible = -1)
     {
-        $result = array();
+        $result = [];
         if (($xml    = $this->getSFormXml()) !== false) {
             $xPathQuery = '//Field | //Column';
             if ($visible !== -1) {

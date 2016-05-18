@@ -55,7 +55,7 @@ abstract class PaymentSystem implements \professionalweb\paymentdrivers\interfac
 
     public function __construct()
     {
-        $this->setParams(array());
+        $this->setParams([]);
     }
 
     /**

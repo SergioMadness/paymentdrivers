@@ -76,7 +76,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      */
     protected function prepareParams(array $params)
     {
-        $result = array();
+        $result = [];
         foreach ($params as $key => $value) {
             $result[] = urldecode($key.' '.$value);
         }
@@ -89,10 +89,10 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * @param array $params
      * @return mixed
      */
-    public function sendMessage(array $params = array())
+    public function sendMessage(array $params = [])
     {
         return \pwf\helpers\HttpHelper::sendCurl($this->getUrl().'?'.http_build_query($params),
-                array(
+                [
                 CURLOPT_FOLLOWLOCATION => 1,
                 CURLOPT_HEADER => 0,
                 CURLOPT_SSL_VERIFYPEER => true,
@@ -102,7 +102,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                 CURLOPT_SSLKEY => $this->getSSLKeyPath(),
                 CURLOPT_SSLKEYPASSWD => $this->getSSLKeyPassword(),
                 CURLOPT_RETURNTRANSFER => true
-        ));
+        ]);
     }
 
     /**
@@ -112,7 +112,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      */
     public function validate()
     {
-        return $this->sendMessage(array(
+        return $this->sendMessage([
                 'Function' => self::FUNCTION_CHECK,
                 'PaymExtId' => $this->getSessionStr(),
                 'PaymSubjTp' => $this->getServiceId(),
@@ -121,7 +121,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                 'TermType' => $this->getTermType(),
                 'TermID' => $this->getTermId(),
                 'FeeSum' => $this->getFee()
-        ));
+        ]);
     }
 
     /**
@@ -134,7 +134,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
     {
         $result = 0;
 
-        $matches = array();
+        $matches = [];
         if (preg_match('/\s(\d+)\s/', $errorMessage, $matches)) {
             $result = (int) $matches[1];
         }
@@ -149,10 +149,10 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      */
     public function checkStatus()
     {
-        return $this->sendMessage(array(
+        return $this->sendMessage([
                 'Function' => self::FUNCTION_CHECK_STATUS,
                 'PaymExtId' => $this->getPaymentId()
-        ));
+        ]);
     }
 
     /**
@@ -160,7 +160,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      */
     public function pay()
     {
-        return $this->sendMessage(array(
+        return $this->sendMessage([
                 'Function' => self::FUNCTION_PAY,
                 'PaymExtId' => $this->getPaymentId(),
                 'PaymSubjTp' => $this->getServiceId(),
@@ -170,7 +170,7 @@ class Rapida extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                 'TermID' => $this->getTermId(),
                 'FeeSum' => $this->getFee(),
                 'TermTime' => date('Ymd\THisO')
-        ));
+        ]);
     }
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">

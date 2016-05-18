@@ -95,12 +95,12 @@ class XFormsParser
     public function getSchema()
     {
         if ($this->schema === null) {
-            $this->schema = array();
+            $this->schema = [];
             foreach ($this->getXMLDocument()->xpath('//xsd:schema') as $input) {
                 foreach ($input->children(self::NAMESPACE_SCHEMA) as $element) {
                     $name = reset($element->attributes()->name);
                     if (isset($element->restriction)) {
-                        $this->schema[$name] = array();
+                        $this->schema[$name] = [];
                         $restriction         = $element->restriction;
                         foreach ($restriction->children(self::NAMESPACE_SCHEMA) as $restrictionElName => $restrictionEl) {
                             $this->schema[$name][$restrictionElName] = reset($restrictionEl->attributes()->value);
@@ -121,11 +121,11 @@ class XFormsParser
     public function getSubmission()
     {
         if ($this->submission === null) {
-            $this->submission = array();
+            $this->submission = [];
             foreach ($this->getXMLDocument()->xpath('//xforms:submission') as $processor) {
                 $attributes            = $processor->attributes();
                 $id                    = reset($attributes->id);
-                $this->submission[$id] = array();
+                $this->submission[$id] = [];
                 foreach ($attributes as $attrName => $attrValue) {
                     $this->submission[$id][$attrName] = reset($attrValue);
                 }
@@ -142,12 +142,12 @@ class XFormsParser
     public function getInputs()
     {
         if ($this->inputs === null) {
-            $this->inputs = array();
+            $this->inputs = [];
             $schema       = $this->getSchema();
             foreach ($this->getXMLDocument()->xpath('//xforms:input') as $input) {
                 $fieldId                        = reset($input->attributes()->id);
                 $code                           = reset($input->attributes()->ref);
-                $this->inputs[$fieldId]         = array();
+                $this->inputs[$fieldId]         = [];
                 $this->inputs[$fieldId]['id']   = $fieldId;
                 $this->inputs[$fieldId]['code'] = $code;
                 foreach ($input->children(self::NAMESPACE_XFORMS) as $name => $info) {
@@ -170,7 +170,7 @@ class XFormsParser
     public function getErrors()
     {
         if ($this->errors === null) {
-            $this->errors = array();
+            $this->errors = [];
             foreach ($this->getXMLDocument()->xpath('//xhtml:p[contains(@class, ERROR)]') as $error) {
                 $ref = reset($error->attributes()->ref);
 
@@ -189,15 +189,15 @@ class XFormsParser
     public function getBind()
     {
         if ($this->binds === null) {
-            $this->binds = array();
+            $this->binds = [];
             foreach ($this->getXMLDocument()->xpath('//xforms:bind') as $bind) {
                 $ref = reset($bind->attributes()->nodeset);
 
-                $this->binds[$ref] = array(
+                $this->binds[$ref] = [
                     'nodeset' => $ref,
                     'required' => reset($bind->attributes()->required) == 'true',
                     'readonly' => reset($bind->attributes()->readonly) == 'true',
-                );
+                ];
             }
         }
         return $this->binds;
@@ -211,14 +211,14 @@ class XFormsParser
     public function getButtons()
     {
         if ($this->buttons === null) {
-            $this->buttons = array();
+            $this->buttons = [];
             foreach ($this->getXMLDocument()->xpath('//xforms:submit') as $button) {
                 $id                 = reset($button->attributes()->id);
                 $processor          = reset($button->attributes()->submission);
-                $this->buttons[$id] = array(
+                $this->buttons[$id] = [
                     'id' => $id,
                     'submission' => $processor
-                );
+                ];
                 foreach ($button->children(self::NAMESPACE_XFORMS) as $name => $info) {
                     $this->buttons[$id][$name] = reset($info);
                 }
@@ -237,11 +237,11 @@ class XFormsParser
     public function getInstance($namespace = self::NAMESPACE_XFORMS)
     {
         if ($this->instance === null) {
-            $this->instance = array();
+            $this->instance = [];
             if (($instance       = $this->getXMLDocument()->xpath('//xforms:instance'))
                 && count($instance) > 0) {
                 foreach ($instance[0]->children($namespace) as $name => $data) {
-                    $this->instance[$name] = array();
+                    $this->instance[$name] = [];
                     foreach ($data->children() as $fieldName => $fieldValue) {
                         $this->instance[$name][$fieldName] = reset($fieldValue);
                     }

@@ -141,9 +141,9 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      * @param array $params
      * @return mixed
      */
-    public function sendMessage(array $params = array())
+    public function sendMessage(array $params = [])
     {
-        $clientParams = array(
+        $clientParams = [
             'SD' => $this->getSD(),
             'AP' => $this->getAP(),
             'OP' => $this->getOP(),
@@ -153,7 +153,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
             'TERM_ID' => $this->getTermId(),
             'ACCEPT_KEYS' => $this->getAcceptedKeys(),
             'NO_ROUTE' => $this->getNoRoute()
-        );
+        ];
 
         $message = implode(self::MESSAGE_LINE_SEPARATOR,
             $this->prepareParams(array_merge($clientParams, $params)));
@@ -179,7 +179,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
     protected function getResponse($inputMessage)
     {
         return \pwf\helpers\HttpHelper::sendCurl($this->getUrl(),
-                array(
+                [
                 CURLOPT_FOLLOWLOCATION => 1,
                 CURLOPT_HEADER => 0,
                 CURLOPT_SSL_VERIFYPEER => 0,
@@ -188,9 +188,9 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
                 CURLOPT_POSTFIELDS => $inputMessage,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_0,
-                CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded',
-                    'Content-Length: '.strlen($inputMessage))
-        ));
+                CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded',
+                    'Content-Length: '.strlen($inputMessage)]
+        ]);
     }
 
     /**
@@ -234,7 +234,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      */
     protected function prepareParams(array $params)
     {
-        $result = array();
+        $result = [];
 
         foreach ($params as $key => $value) {
             $result[] = $key.'='.$value;
@@ -251,10 +251,10 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
     public function validate()
     {
         return $this->sendMessage(array_merge($this->getParams(),
-                    array(
+                    [
                 'AMOUNT' => number_format($this->getAmount(), 2, '.', ''),
                 'AMOUNT_ALL' => number_format($this->getAmount(), 2, '.', ''),
-        )));
+        ]));
     }
 
     /**
@@ -264,10 +264,10 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      */
     public function checkStatus()
     {
-        return $this->sendMessage(array_merge(array(
+        return $this->sendMessage(array_merge([
                 'ACCEPT_KEYS' => $this->getAcceptedKeys(),
                 'SESSION' => $this->getSessionStr()
-                    ), $this->getParams()));
+                    ], $this->getParams()));
     }
 
     /**
@@ -277,12 +277,12 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      */
     public function pay()
     {
-        return $this->sendMessage(array_merge(array(
+        return $this->sendMessage(array_merge([
                 'AMOUNT' => number_format($this->getAmount(), 2),
                 'AMOUNT_ALL' => number_format($this->getAmount(), 2),
                 'DATE' => date('d.m.Y H:i:s'),
                 'RRN' => $this->getPaymentId()
-                    ), $this->getParams()));
+                    ], $this->getParams()));
     }
 
     /**
@@ -294,8 +294,8 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      */
     protected function parseResult($text)
     {
-        $result = array();
-        $parsed = array();
+        $result = [];
+        $parsed = [];
         if (preg_match_all('/^(.*?)=(.*)/mi', $text, $parsed) !== false) {
             for ($i = 0; $i < count($parsed[0]); $i++) {
                 if ($parsed[1][$i] !== '') {
@@ -468,7 +468,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      * Set terminal id
      *
      * @param int $termId
-     * @return Rapida
+     * @return Cyberplat
      */
     public function setTermId($termId)
     {
@@ -512,7 +512,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      * Set PAY_TOOL param
      *
      * @param int $payTool
-     * @return \project\Libs\PaymentGate\Cyberplat
+     * @return Cyberplat
      */
     public function setPayTool($payTool)
     {
@@ -534,7 +534,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      * Set REQ_TYPE param
      *
      * @param int $type
-     * @return \project\Libs\PaymentGate\Cyberplat
+     * @return Cyberplat
      */
     public function setReqType($type)
     {
@@ -556,7 +556,7 @@ class Cyberplat extends \professionalweb\paymentdrivers\abstraction\PaymentSyste
      * Set NO_ROUTE param
      *
      * @param int $noRoute
-     * @return \project\Libs\PaymentGate\Cyberplat
+     * @return Cyberplat
      */
     public function setNoRoute($noRoute)
     {

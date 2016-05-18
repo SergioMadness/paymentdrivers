@@ -195,7 +195,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * @param array $params
      * @return string
      */
-    public function sendMessage(array $params = array())
+    public function sendMessage(array $params = [])
     {
         return $this->unzipResponse(
                 $this->sendRequest(
@@ -216,7 +216,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * @param array $params
      * @return string
      */
-    protected function prepareMessage($xmlMessage, array $params = array())
+    protected function prepareMessage($xmlMessage, array $params = [])
     {
         $xmlMessage       = str_replace('{TERMINAL_NAME}',
             $this->getTerminalName(), $xmlMessage);
@@ -256,15 +256,15 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
         $result = '';
 
         $context = stream_context_create(
-            $this->isTLS() ? array(
-                'ssl' => array(
+            $this->isTLS() ? [
+                'ssl' => [
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true,
                     'ciphers' => 'aGOST',
                     'disable_compression' => false,
-                ),
-                ) : array()
+                ],
+                ] : []
         );
 
         $port   = $this->getPort();
@@ -336,11 +336,11 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
 
             $objDSig->addReference(
                 $objects->item(0), XMLSecurityDSig::SHA1,
-                array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
+                ['http://www.w3.org/2000/09/xmldsig#enveloped-signature']
             );
 
             $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256,
-                array('type' => 'private'));
+                ['type' => 'private']);
 
             $objKey->loadKey(getcwd().$this->getCertificate(), true);
 
@@ -417,9 +417,9 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
     public function getFormInfo($formId)
     {
         return $this->setMessage(self::MESSAGE_ReqForm)
-                ->setParams(array(
+                ->setParams([
                     'srvNum' => $formId
-                ))
+                ])
                 ->sendMessage();
     }
 
@@ -431,10 +431,10 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
     public function formEvent($eventName, $form)
     {
         return $this->setMessage(self::MESSAGE_ReqFormEvent)
-                ->setParams(array(
+                ->setParams([
                     'event' => $eventName,
                     'sForm' => $form
-                ))
+                ])
                 ->sendMessage();
     }
 
@@ -448,32 +448,32 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
     public function createOrder($sForm, $payType = self::PAYTYPE_CASHLESS)
     {
         return $this->setMessage(self::MESSAGE_ReqCreateOrders)
-                ->setParams(array(
-                    'ROrders' => array(
-                        'ROrderGroup' => array(
-                            'ROrder' => array(
+                ->setParams([
+                    'ROrders' => [
+                        'ROrderGroup' => [
+                            'ROrder' => [
                                 'payType' => $payType,
                                 'sForm' => $sForm
-                            )
-                        )
-                    )
-                ))
+                            ]
+                        ]
+                    ]
+                ])
                 ->sendMessage();
     }
 
     public function completeOrder($orderId, $transactionId)
     {
         return $this->setMessage(self::MESSAGE_ReqNoticeOrders)
-                ->setParams(array(
-                    'RNoticeGroup' => array(
+                ->setParams([
+                    'RNoticeGroup' => [
                         'groupId' => $orderId,
-                        'RNotice' => array(
+                        'RNotice' => [
                             'orderId' => $orderId,
-                            'PayInfo' => array(
+                            'PayInfo' => [
                                 'tranNum' => $transactionId
-                            )
-                        )
-                    ))
+                            ]
+                        ]
+                    ]]
                 )
                 ->sendMessage();
     }
@@ -483,7 +483,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * Set terminal name
      *
      * @param string $name
-     * @return \project\Libs\PaymentGate\FSG
+     * @return FSG
      */
     public function setTerminalName($name)
     {
@@ -505,7 +505,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * Set certificate
      *
      * @param string $path
-     * @return \project\Libs\PaymentGate\FSG
+     * @return FSG
      */
     public function setCertificate($path)
     {
@@ -527,7 +527,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * Set FSG host
      *
      * @param string $host
-     * @return \project\Libs\PaymentGate\FSG
+     * @return FSG
      */
     public function setHost($host)
     {
@@ -549,7 +549,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * Set port
      *
      * @param int $port
-     * @return \project\Libs\PaymentGate\FSG
+     * @return FSG
      */
     public function setPort($port)
     {
@@ -571,7 +571,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
      * Set connection is secured
      *
      * @param bool $flag
-     * @return \project\Libs\PaymentGate\FSG
+     * @return FSG
      */
     public function setIsTLS($flag)
     {

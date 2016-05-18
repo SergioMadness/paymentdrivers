@@ -31,17 +31,16 @@ class SignedSoapClient extends \SoapClient
     const SOAP_NS      = 'http://schemas.xmlsoap.org/soap/envelope/';
     const DS_NS        = 'http://www.w3.org/2000/09/xmldsig#';
 
-    protected $_ssl_options = array();
+    protected $_ssl_options = [];
     protected $_timeout     = 60;
 
-    function __construct($wsdl, $options = array())
+    function __construct($wsdl, $options = [])
     {
         if (isset($options['ssl'])) {
             $this->_ssl_options = $options['ssl'];
             if (isset($this->_ssl_options['cert'])) {
                 $certinfo                       = pathinfo($this->_ssl_options['cert']);
-                if (in_array(strtolower($certinfo['extension']),
-                        array('p12', 'pfx')))
+                if (in_array(strtolower($certinfo['extension']), ['p12', 'pfx']))
                         $this->_ssl_options['certtype'] = 'P12';
             }
         }
@@ -174,7 +173,7 @@ class SignedSoapClient extends \SoapClient
     {
         $certinfo = pathinfo($cert);
         $cert     = file_get_contents($cert);
-        if (in_array(strtolower($certinfo['extension']), array('p12', 'pfx'))) {
+        if (in_array(strtolower($certinfo['extension']), ['p12', 'pfx'])) {
             // читаем pkcs12
             openssl_pkcs12_read($cert, $certs,
                 empty($this->_ssl_options['certpasswd']) ? '' : $this->_ssl_options['certpasswd']);
@@ -263,7 +262,7 @@ class SignedSoapClient extends \SoapClient
                 'wsse:Password'));
 
         $signInfo = $signNode->appendChild($this->buildSignedInfo($dom,
-                array('reqBody', 'usernameToken')));
+                ['reqBody', 'usernameToken']));
 
         // и сама подпись
         openssl_sign($this->canonicalizeNode($signInfo), $signature, $pkeyid,
@@ -286,7 +285,7 @@ class SignedSoapClient extends \SoapClient
 
         $request = $dom->saveXML();
 
-        $options        = array('timeout' => $this->_timeout);
+        $options        = ['timeout' => $this->_timeout];
         if ($this->_ssl_options) $options['ssl'] = $this->_ssl_options;
         file_put_contents('request.xml', $request);
 

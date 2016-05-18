@@ -13,5 +13,5 @@ interface PaymentSystem
      *
      * @param array $params
      */
-    public function sendMessage(array $params = array());
+    public function sendMessage(array $params = []);
 }
