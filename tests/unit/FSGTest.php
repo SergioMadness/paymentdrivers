@@ -1,6 +1,6 @@
 <?php
-define('FSG_RESPONSE', 'tests/_data/fsg_response.zip');
-define('FSG_RESPONSE_XML', 'tests/_data/fsg_ans.xml');
+define('FSG_RESPONSE', __DIR__.'/../_data/fsg_response.zip');
+define('FSG_RESPONSE_XML', __DIR__.'/../_data/fsg_ans.xml');
 
 use Codeception\Util\Stub;
 use professionalweb\paymentdrivers\FSG\FSG;
