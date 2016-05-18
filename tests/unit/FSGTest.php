@@ -50,7 +50,8 @@ class FSGTest extends \PHPUnit_Framework_TestCase
     public function testWrapMethods()
     {
         $response = file_get_contents(__DIR__.'/../../'.self::FSG_RESPONSE_XML);
-        $this->assertEquals(trim($response), trim($this->mock->getPPPInfo()));
+        $this->fail($this->mock->getPPPInfo());
+        $this->assertEquals($response, $this->mock->getPPPInfo());
         $this->assertEquals($response, $this->mock->getFormInfo(1));
         $this->assertEquals($response,
             $this->mock->formEvent('eventName', 'sForm'));
