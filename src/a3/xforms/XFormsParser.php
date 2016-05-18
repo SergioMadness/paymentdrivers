@@ -243,7 +243,7 @@ class XFormsParser
                 foreach ($instance[0]->children($namespace) as $name => $data) {
                     $this->instance[$name] = [];
                     foreach ($data->children() as $fieldName => $fieldValue) {
-                        $this->instance[$name][$fieldName] = reset($fieldValue);
+                        $this->instance[$name][$fieldName] = (string) $fieldValue;
                     }
                 }
             }
