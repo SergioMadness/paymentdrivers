@@ -1,5 +1,5 @@
-Helpers
-====
+Payment systems' drivers
+========================
 
 [http://web-development.pw/](http://web-development.pw/)
 
@@ -16,10 +16,15 @@ Requirements
 ------------
  - PHP 5.4+
 
+Dependencies
+------------
+ - [robrichards/xmlseclibs](https://github.com/robrichards/xmlseclibs)
+ - [professionalweb/helpers](https://github.com/SergioMadness/pwf-helpers)
+
 
 Installation
 ------------
-PWF is available through [composer](https://getcomposer.org/)
+Module is available through [composer](https://getcomposer.org/)
 
 composer require professionalweb/paymentdrivers "dev-master"
 
