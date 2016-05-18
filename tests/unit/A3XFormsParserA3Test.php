@@ -36,8 +36,8 @@ class A3XFormsParserA3Test extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($this->mock->getInstance());
         $this->assertNotEmpty($this->mock->instanceAsXml());
 
-        $this->assertEquals($this->mock->getTransactionId(),
-            self::TRANSACTION_ID);
+        $this->assertEquals(self::TRANSACTION_ID,
+            $this->mock->getTransactionId());
 
         $this->assertEquals(12,
             $this->mock->setInstanceValue('a3_PERSONAL_ACCOUNT1_1', 12)->getInstanceValue('a3_PERSONAL_ACCOUNT1_1'));

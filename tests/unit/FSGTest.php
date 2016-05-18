@@ -1,16 +1,16 @@
 <?php
-define('FSG_RESPONSE', __DIR__.'/../_data/fsg_response.zip');
-define('FSG_RESPONSE_XML', __DIR__.'/../_data/fsg_ans.xml');
 
 use Codeception\Util\Stub;
 use professionalweb\paymentdrivers\FSG\FSG;
 
 class FSGTest extends \PHPUnit_Framework_TestCase
 {
-    const TERMINALNAME    = 'terminal';
-    const CERTIFICATEPATH = '/tests/_data/fsg_cert.pem';
-    const HOST            = '127.0.0.1';
-    const PORT            = 7653;
+    const TERMINALNAME     = 'terminal';
+    const CERTIFICATEPATH  = '/tests/_data/fsg_cert.pem';
+    const HOST             = '127.0.0.1';
+    const PORT             = 7653;
+    const FSG_RESPONSE     = 'tests/_data/fsg_response.zip';
+    const FSG_RESPONSE_XML = 'tests/_data/fsg_ans.xml';
 
     private $mock;
 
@@ -20,7 +20,7 @@ class FSGTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                 'sendRequest' => function ($data) {
-                    return file_get_contents(FSG_RESPONSE);
+                    return file_get_contents(self::FSG_RESPONSE);
                 }
             ))->setCertificate(self::CERTIFICATEPATH);
     }
@@ -49,7 +49,7 @@ class FSGTest extends \PHPUnit_Framework_TestCase
     // Test send message
     public function testWrapMethods()
     {
-        $response = file_get_contents(FSG_RESPONSE_XML);
+        $response = file_get_contents(self::FSG_RESPONSE_XML);
         $this->assertEquals($response, $this->mock->getPPPInfo());
         $this->assertEquals($response, $this->mock->getFormInfo(1));
         $this->assertEquals($response,
