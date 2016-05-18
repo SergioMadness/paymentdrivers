@@ -335,7 +335,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
             $objDSig->setCanonicalMethod(XMLSecurityDSig::C14N);
 
             $objDSig->addReference(
-                $objects[0], XMLSecurityDSig::SHA1,
+                $objects->item(0), XMLSecurityDSig::SHA1,
                 array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
             );
 
