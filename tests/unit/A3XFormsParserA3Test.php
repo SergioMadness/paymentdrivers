@@ -1,9 +1,9 @@
 <?php
-define('XFORMS_PATH', 'tests/_data/xforms.xml');
 
 class A3XFormsParserA3Test extends \PHPUnit_Framework_TestCase
 {
     const TRANSACTION_ID = 1970322;
+    const XFORMS_PATH    = 'tests/_data/xforms.xml';
 
     private $mock;
 
@@ -23,7 +23,7 @@ class A3XFormsParserA3Test extends \PHPUnit_Framework_TestCase
     // Test getters and setters
     public function testIt()
     {
-        $xform = file_get_contents(XFORMS_PATH);
+        $xform = file_get_contents(__DIR__.'/../../'.self::XFORMS_PATH);
         $this->mock->setXMLData($xform);
         $this->assertEquals($xform, $this->mock->getXMLData());
 

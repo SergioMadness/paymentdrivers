@@ -20,7 +20,7 @@ class FSGTest extends \PHPUnit_Framework_TestCase
                 array(),
                 array(
                 'sendRequest' => function ($data) {
-                    return file_get_contents(self::FSG_RESPONSE);
+                    return file_get_contents(__DIR__.'/../../'.self::FSG_RESPONSE);
                 }
             ))->setCertificate(self::CERTIFICATEPATH);
     }
@@ -49,7 +49,7 @@ class FSGTest extends \PHPUnit_Framework_TestCase
     // Test send message
     public function testWrapMethods()
     {
-        $response = file_get_contents(self::FSG_RESPONSE_XML);
+        $response = file_get_contents(__DIR__.'/../../'.self::FSG_RESPONSE_XML);
         $this->assertEquals($response, $this->mock->getPPPInfo());
         $this->assertEquals($response, $this->mock->getFormInfo(1));
         $this->assertEquals($response,
