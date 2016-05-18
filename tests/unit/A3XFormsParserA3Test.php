@@ -1,0 +1,47 @@
+<?php
+define('XFORMS_PATH', 'tests/_data/xforms.xml');
+
+class A3XFormsParserA3Test extends \PHPUnit_Framework_TestCase
+{
+    const TRANSACTION_ID = 1970322;
+
+    private $mock;
+
+    protected function setUp()
+    {
+        $this->mock = Codeception\Util\Stub::construct('\professionalweb\paymentdrivers\a3\xforms\XFormsParserA3',
+                array(
+                'xml' => ''
+        ));
+    }
+
+    protected function tearDown()
+    {
+        $this->mock = null;
+    }
+
+    // Test getters and setters
+    public function testIt()
+    {
+        $xform = file_get_contents(XFORMS_PATH);
+        $this->mock->setXMLData($xform);
+        $this->assertEquals($xform, $this->mock->getXMLData());
+
+        $this->assertNotEmpty($this->mock->getSchema());
+        $this->assertNotEmpty($this->mock->getSubmission());
+        $this->assertNotEmpty($this->mock->getInputs());
+        $this->assertNotEmpty($this->mock->getErrors());
+        $this->assertNotEmpty($this->mock->getBind());
+        $this->assertNotEmpty($this->mock->getButtons());
+        $this->assertNotEmpty($this->mock->getInstance());
+        $this->assertNotEmpty($this->mock->instanceAsXml());
+
+        $this->assertEquals($this->mock->getTransactionId(),
+            self::TRANSACTION_ID);
+
+        $this->assertEquals(12,
+            $this->mock->setInstanceValue('a3_PERSONAL_ACCOUNT1_1', 12)->getInstanceValue('a3_PERSONAL_ACCOUNT1_1'));
+
+        $this->assertEquals('<root/>', $this->mock->clear()->getXMLData());
+    }
+}

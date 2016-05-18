@@ -1,0 +1,22 @@
+<Form version="v.1" modifyDate="2013-07-10T12:09:01"> 
+    <Service num="515" name="Сотовый - МТС"/> 
+    <Fields onValidateEvent="validate"> 
+        <Field name="ACCOUNT" caption="Номер телефона/лицевой счет" dataType="Account" hint="Номер телефона/лицевой счет" print="0" type="TextBox" > 
+            <Validators> 
+                <MaxLength value="15" message="Длина значения не должна превышать 15 символов"/> 
+                <Required value="1" message="Не указано значение"/> 
+            </Validators> 
+        </Field> 
+        <Field name="MTSID" caption="Лицевой счет абонента" digitOnly="1" hint="Лицевой счет абонента" readOnly="1" type="TextBox" > 
+            <Validators> 
+                <MaxLength value="20" message="Длина значения не должна превышать 20 символов"/> 
+            </Validators> 
+        </Field> 
+        <Field name="OPERNAME" caption="Оператор абонента" hint="Оператор абонента" readOnly="1" type="TextBox" > 
+            <Validators> 
+                <MaxLength value="100" message="Длина значения не должна превышать 100 символов"/> 
+            </Validators> 
+        </Field> 
+        <Field name="orderSum" caption="Сумма платежа:" dataType="orderSum" type="CurrencyBox" value="0"/> 
+    </Fields> 
+</Form>

@@ -1,0 +1,32 @@
+language: php
+php:
+  - '5.4'
+  - '5.5'
+  - '5.6'
+  - '7.0'
+  - hhvm
+  - nightly
+matrix:
+  allow_failures:
+    - php: 5.5
+    
+before_script: 
+  - composer self-update && composer update
+  - mkdir -p build/logs
+  - chmod -R 0777 build/logs
+script: 
+  - mkdir -p build/logs
+  - vendor/bin/codecept build && vendor/bin/codecept run
+  - '[[ "$TRAVIS_PHP_VERSION" != "hhvm" ]] || echo "xdebug.enable = On" >> /etc/hhvm/php.ini'
+  - vendor/bin/codecept run --coverage --coverage-xml ../../build/logs/clover.xml
+  - '[[ "$TRAVIS_PHP_VERSION" != "hhvm" ]] || echo "xdebug.enable = Off" >> /etc/hhvm/php.ini'
+after_success:
+  - CODECLIMATE_REPO_TOKEN="9c931dd78e634d54a83a91f158d14f24550b723462d3bb6bea0e3c0192e1994f" ./vendor/bin/test-reporter
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;'
+branches:
+  only:
+    - master
+    - dev
+addons:
+    code_climate:
+        repo_token: 9c931dd78e634d54a83a91f158d14f24550b723462d3bb6bea0e3c0192e1994f

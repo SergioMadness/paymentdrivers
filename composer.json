@@ -1,0 +1,50 @@
+{
+    "name": "professionalweb/paymentdrivers",
+    "version": "1.0",
+    "description": "Drivers for payment systems",
+    "homepage": "http://web-development.pw/",
+    "keywords": [
+        "pwf",
+        "professional web",
+        "web-development.pw",
+        "composer",
+        "payment system",
+        "rapida",
+        "cyberplat",
+        "fsg",
+        "A3"
+    ],
+    "minimum-stability": "stable",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zinchenko Sergey",
+            "email": "zinchenko@web-development.pw"
+        }
+    ],
+    "support": {
+        "email": "info@web-development.pw",
+        "issues": "https://github.com/SergioMadness/pwf/issues",
+        "wiki": "https://github.com/SergioMadness/pwf/wiki",
+        "source": "https://github.com/SergioMadness/pwf/releases"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "robrichards/xmlseclibs": "*",
+        "professionalweb/helpers": "*"
+    },
+    "require-dev": {
+        "codeception/codeception": "*",
+        "satooshi/php-coveralls": "*",
+        "codeclimate/php-test-reporter": "*"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "autoload": {
+        "psr-4": {
+            "professionalweb\\paymentdrivers\\": "src/"
+        }
+    }
+}

@@ -1,0 +1,61 @@
+<xhtml:html xsi:schemaLocation="http://www.w3.org/2002/xforms http://www.w3.org/MarkUp/Forms/2002/XForms-Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:a-3="http://www.a-3.ru/xforms/schema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <xhtml:head>
+        <xforms:model>
+            <xsd:schema targetNamespace="http://www.a-3.ru/xforms/schema">
+                <xsd:simpleType name="PERSONAL_ACCOUNT1_1">
+                    <xsd:restriction base="xsd:string">
+                        <xsd:pattern value="^\d{10}$"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                <xsd:simpleType name="SUM2_1">
+                    <xsd:restriction base="xsd:decimal">
+                        <xsd:maxInclusive value="15000"/>
+                        <xsd:minInclusive value="1"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                <xsd:complexType name="SumCheck">
+                    <xsd:all>
+                        <xsd:element name="sum" type="xsd:decimal"/>
+                        <xsd:element name="check" type="xsd:boolean"/>
+                    </xsd:all>
+                </xsd:complexType>
+                <xsd:element name="xmlData">
+                    <xsd:complexType>
+                        <xsd:all>
+                            <xsd:element name="transactionId" type="xsd:string" nillable="false"/>
+                            <xsd:element name="a3_PERSONAL_ACCOUNT1_1" type="a-3:PERSONAL_ACCOUNT1_1" nillable="false"/>
+                            <xsd:element name="a3_SUM2_1" type="a-3:SUM2_1" nillable="false"/>
+                        </xsd:all>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:schema>
+            <xforms:instance>
+                <a-3:xmlData>
+                    <transactionId>1970322</transactionId>
+                    <a3_PERSONAL_ACCOUNT1_1/>
+                    <a3_SUM2_1/>
+                </a-3:xmlData>
+            </xforms:instance>
+            <xforms:bind readonly="false" relevant="true()" nodeset="a3_PERSONAL_ACCOUNT1_1" exttype="PERSONAL_ACCOUNT" type="a-3:PERSONAL_ACCOUNT1_1" required="true"/>
+            <xforms:bind readonly="false" relevant="false()" nodeset="a3_SUM2_1" exttype="SUM" type="a-3:SUM2_1" required="true"/>
+            <xforms:submission id="a-3.submission.back" method="get" action="http://localhost/"/>
+            <xforms:submission id="a-3.submission.next" method="get" action="http://localhost/"/>
+            <xforms:submission id="a-3.submission.pay" method="get" action="http://localhost/"/>
+            <xforms:submission id="a-3.submission.link" method="get" action="http://localhost/"/>
+        </xforms:model>
+    </xhtml:head>
+    <xhtml:body>
+        <xforms:group id="10">
+            <xforms:label/>
+            <xforms:input id="PERSONAL_ACCOUNT1_1" ref="a3_PERSONAL_ACCOUNT1_1" incremental="true" class="normalText">
+                <xforms:label>Номер телефона:</xforms:label>
+                <xforms:alert>Вы ввели неправильный номер.</xforms:alert>
+                <xforms:help>Пример: 1234567890</xforms:help>
+            </xforms:input>
+            <xhtml:p id="errorMessage_10" class="errorMessage ERROR" ref="PERSONAL_ACCOUNT1_1">Лицевой счет Не пройдена логическая проверка Обязательное к заполнению</xhtml:p>
+        </xforms:group>
+        <xforms:submit id="a-3.next" submission="a-3.submission.next">
+            <xforms:label>Далее</xforms:label>
+        </xforms:submit>
+    </xhtml:body>
+</xhtml:html>
