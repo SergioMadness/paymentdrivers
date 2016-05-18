@@ -7,14 +7,14 @@ Helpers
 [![Build Status](https://travis-ci.org/SergioMadness/paymentdrivers.svg?branch=dev)](https://travis-ci.org/SergioMadness/paymentdrivers)
 [![Code Climate](https://codeclimate.com/github/SergioMadness/paymentdrivers/badges/gpa.svg)](https://codeclimate.com/github/SergioMadness/paymentdrivers)
 [![Coverage Status](https://coveralls.io/repos/github/SergioMadness/paymentdrivers/badge.svg?branch=dev)](https://coveralls.io/github/SergioMadness/paymentdrivers?branch=dev)
-[![Dependency Status](https://www.versioneye.com/user/projects/573c4f34ce8d0e004505e8d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/573c4f34ce8d0e004505e8d4)
+[![Dependency Status](https://www.versioneye.com/user/projects/573c5c00ce8d0e004130bd62/badge.svg?style=flat)](https://www.versioneye.com/user/projects/573c5c00ce8d0e004130bd62)
 [![License](https://poser.pugx.org/professionalweb/paymentdrivers/license)](https://packagist.org/packages/professionalweb/paymentdrivers)
 [![Latest Unstable Version](https://poser.pugx.org/professionalweb/paymentdrivers/v/unstable)](https://packagist.org/packages/professionalweb/paymentdrivers)
 
 
 Requirements
 ------------
- - PHP 5.4+
+ - PHP 5.3+
 
 
 Installation
