@@ -24,6 +24,9 @@ class A3XFormsParserA3Test extends \PHPUnit_Framework_TestCase
     public function testIt()
     {
         $xform = file_get_contents(__DIR__.'/../../'.self::XFORMS_PATH);
+        if($xform===false) {
+            $this->fail(__DIR__.'/../../'.self::XFORMS_PATH);
+        }
         $this->mock->setXMLData($xform);
         $this->assertEquals($xform, $this->mock->getXMLData());
 
