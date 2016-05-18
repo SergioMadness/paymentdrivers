@@ -109,7 +109,7 @@ class FormParser
         $result     = '';
         $attributes = $node->attributes();
         if (isset($attributes->$eventName)) {
-            $result = reset($attributes->$eventName);
+            $result = (string) $attributes->$eventName;
         }
         return $result;
     }
@@ -251,10 +251,10 @@ class FormParser
             $fields = $sFormXml->xpath('//Field');
             foreach ($fields as $field) {
                 $attributes = $field->attributes();
-                $name       = reset($attributes['name']);
+                $name       = (string) $attributes['name'];
                 if (isset($attributes['dataType'])) {
                     $this->setFieldAttribute($name, 'dataType',
-                        reset($attributes['dataType']));
+                        (string) $attributes['dataType']);
                 }
             }
         }
