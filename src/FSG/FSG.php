@@ -88,6 +88,37 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
     </dsig:Object></Document>';
 
     /**
+     * Abonent list
+     */
+    const MESSAGE_ReqAbonentList = '<Document>
+<dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
+<GIN2>
+		<BILLING>
+			<ReqAbonentList Id="container">
+				<AbonentsOn>
+					<abonentId>1</abonentId>
+				</AbonentsOn>
+				<AbonentsFilter>
+					<fio>ИВАНОВ ИВАН ИВАНОВИЧ</fio>
+					<srvNum>9</srvNum>
+					<exactSearch>1</exactSearch>
+				</AbonentsFilter>
+			</ReqAbonentList>
+		</BILLING>
+		<META-INF>
+			<ENTRY>
+				<name>PI</name>
+				<value>GIN_WEB</value>
+			</ENTRY>
+			<ENTRY>
+				<name>TERMINAL</name>
+				<value>{TERMINAL_NAME}</value>
+			</ENTRY>
+		</META-INF>
+	</GIN2>
+</dsig:Object></Document>';
+
+    /**
      * Form request
      */
     const MESSAGE_ReqForm = '<Document>
@@ -163,6 +194,35 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
         </dsig:Object>
 </Document>
 ';
+
+    /**
+     * Return orders
+     */
+    const MESSAGE_ReqReturnOrders = '<Document>
+<dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
+<GIN2>
+		<PAY>
+			<ReqReturnOrders Id="container">
+
+			</ReqReturnOrders>
+		</PAY>
+		<META-INF>
+			<ENTRY>
+				<name>PI</name>
+				<value>GIN_WEB</value>
+			</ENTRY>
+			<ENTRY>
+				<name>TERMINAL</name>
+				<value>{TERMINAL_NAME}</value>
+			</ENTRY>
+		</META-INF>
+	</GIN2>
+</dsig:Object>
+</Document>';
+
+    /**
+     * Complete order
+     */
     const MESSAGE_ReqNoticeOrders = '
 <Document>
 <dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
@@ -186,6 +246,79 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
 </dsig:Object>
 </Document>
 ';
+
+    /**
+     * Statement request
+     */
+    const MESSAGE_ReqStatement = '<Document>
+<dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
+<GIN2>
+		<BILLING>
+			<ReqStatement Id="container">
+				
+			</ReqStatement>
+		</BILLING>
+		<META-INF>
+			<ENTRY>
+				<name>PI</name>
+				<value>GIN_WEB</value>
+			</ENTRY>
+			<ENTRY>
+				<name>TERMINAL</name>
+				<value>{TERMINAL_NAME}</value>
+			</ENTRY>
+		</META-INF>
+	</GIN2>
+</dsig:Object>
+</Document>';
+
+    /**
+     * Get city list
+     */
+    const MESSAGE_ReqCityList = '<Document>
+<dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
+<GIN2>
+		<INFO>
+			<ReqCityList Id="container" />
+		</INFO>
+		<META-INF>
+			<ENTRY>
+				<name>PI</name>
+				<value>GIN_WEB</value>
+			</ENTRY>
+			<ENTRY>
+				<name>TERMINAL</name>
+				<value>{TERMINAL_NAME}</value>
+			</ENTRY>
+		</META-INF>
+	</GIN2>
+</dsig:Object>
+</Document>';
+
+    /**
+     * Street list request
+     */
+    const MESSAGE_ReqStreetList = '<Document>
+<dsig:Object xmlns="" xmlns:dsig="http://www.w3.org/2000/01/xmldsig">
+<GIN2>
+		<INFO>
+			<ReqStreetList Id="container">
+				
+			</ReqStreetList>
+		</INFO>
+		<META-INF>
+			<ENTRY>
+				<name>PI</name>
+				<value>GIN_WEB</value>
+			</ENTRY>
+			<ENTRY>
+				<name>TERMINAL</name>
+				<value>{TERMINAL_NAME}</value>
+			</ENTRY>
+		</META-INF>
+	</GIN2>
+</dsig:Object>
+</Document>';
 
     //</editor-fold>
 
@@ -397,6 +530,7 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
         return $this->message;
     }
 
+    //<editor-fold desc="Wrap methods" defaultstate="collapsed">
     /**
      * Send ReqPPPInfo message
      *
@@ -461,6 +595,13 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                 ->sendMessage();
     }
 
+    /**
+     * Notify order is complete
+     *
+     * @param int $orderId
+     * @param int $transactionId
+     * @return string
+     */
     public function completeOrder($orderId, $transactionId)
     {
         return $this->setMessage(self::MESSAGE_ReqNoticeOrders)
@@ -478,6 +619,126 @@ class FSG extends \professionalweb\paymentdrivers\abstraction\PaymentSystem
                 ->sendMessage();
     }
 
+    /**
+     * Abonent search
+     *
+     * @param int $abonentId
+     * @param string $fio
+     * @param int $serviceId
+     * @param bool $exactSearch
+     * @return string
+     */
+    public function getAbonentList($abonentId = null, $fio = null,
+                                   $serviceId = null, $exactSearch = false)
+    {
+        $params = [];
+        if ($abonentId !== null) {
+            $params['AbonentsOn'] = [
+                'abonentId' => $abonentId
+            ];
+        }
+        if ($fio !== null) {
+            if (!isset($params['AbonentsFilter'])) {
+                $params['AbonentsFilter'] = [];
+            }
+            $params['AbonentsFilter']['fio'] = $fio;
+        }
+        if ($serviceId !== null) {
+            if (!isset($params['AbonentsFilter'])) {
+                $params['AbonentsFilter'] = [];
+            }
+            $params['AbonentsFilter']['srvNum'] = $serviceId;
+        }
+        if ($exactSearch) {
+            if (!isset($params['AbonentsFilter'])) {
+                $params['AbonentsFilter'] = [];
+            }
+            $params['AbonentsFilter']['exactSearch'] = 1;
+        }
+        return $this->setMessage(self::MESSAGE_ReqAbonentList)
+                ->sendMessage($params);
+    }
+
+    /**
+     * Get statement
+     *
+     * @param int $abonentId
+     * @param string $startDate
+     * @param string $endDate
+     * @param int $serviceId
+     * @param bool $showDataSet
+     * @return string
+     */
+    public function getStatement($abonentId, $startDate, $endDate = null,
+                                 $serviceId = null, $showDataSet = false)
+    {
+        if ($endDate == null) {
+            $endDate = time();
+        }
+        $params = [
+            'StatementOn' => [
+                'abonentId' => $abonentId,
+                'Period' => [
+                    'beginDate' => date('c', strtotime($startDate)),
+                    'endDate' => date('c', strtotime($endDate))
+                ]
+            ]
+        ];
+        if ($showDataSet) {
+            $params['StatementFilter']['showDataSet'] = 1;
+        }
+        if ($serviceId !== null) {
+            $params['StatementOn']['srvNum'] = $serviceId;
+        }
+
+        return $this->setMessage(self::MESSAGE_ReqStatement)
+                ->sendMessage($params);
+    }
+
+    /**
+     * Get city list
+     *
+     * @return string
+     */
+    public function getCityList()
+    {
+        return $this->setMessage(self::MESSAGE_ReqCityList)
+                ->sendMessage();
+    }
+
+    /**
+     * Get street list
+     *
+     * @param string $cityName
+     * @return string
+     */
+    public function getStreetList($cityName)
+    {
+        return $this->setMessage(self::MESSAGE_ReqStreetList)
+                ->sendMessage([
+                    'city' => $cityName
+        ]);
+    }
+
+    /**
+     * Cancel order group
+     *
+     * @param int $orderGroupId
+     * @return string
+     */
+    public function cancelOrder($orderGroupId)
+    {
+        return $this->setMessage(self::MESSAGE_ReqReturnOrders)
+                ->sendMessage([
+                    'RReturnGroup' => [
+                        'groupId' => $orderGroupId
+                    ]
+        ]);
+    }
+
+    //</editor-fold>
+    //
+    //
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
     /**
      * Set terminal name

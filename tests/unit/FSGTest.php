@@ -54,5 +54,10 @@ class FSGTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($this->mock->formEvent('eventName', 'sForm'));
         $this->assertNotEmpty($this->mock->createOrder('sForm'));
         $this->assertNotEmpty($this->mock->completeOrder('sForm', 1));
+        $this->assertNotEmpty($this->mock->getAbonentList(1));
+        $this->assertNotEmpty($this->mock->getStatement(1, '2016-01-20'));
+        $this->assertNotEmpty($this->mock->getCityList());
+        $this->assertNotEmpty($this->mock->getStreetList('НОВОСИБИРСК'));
+        $this->assertNotEmpty($this->mock->cancelOrder(1));
     }
 }
